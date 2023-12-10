@@ -25,6 +25,9 @@ import com.dicoding.habitapp.utils.HABIT_ID
 import com.dicoding.habitapp.utils.HabitSortType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HabitListActivity : AppCompatActivity() {
 
@@ -73,7 +76,9 @@ class HabitListActivity : AppCompatActivity() {
             getString(message),
             Snackbar.LENGTH_SHORT
         ).setAction("Undo"){
-            viewModel.insert(viewModel.undo.value?.getContentIfNotHandled() as Habit)
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.insert(viewModel.undo.value?.getContentIfNotHandled() as Habit)
+            }
         }.show()
     }
 

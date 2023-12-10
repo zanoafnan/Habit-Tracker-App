@@ -1,5 +1,6 @@
 package com.dicoding.habitapp.notification
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -33,7 +34,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
                 intentToDetail.putExtra(HABIT_ID, habitId)
                 val pendingIntent = TaskStackBuilder.create(applicationContext).run {
                     addNextIntentWithParentStack(intentToDetail)
-                    getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
+                    getPendingIntent(habitId, PendingIntent.FLAG_IMMUTABLE)
                 }
                 val notificationManagerComp = applicationContext
                     .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -43,6 +44,8 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
                     .setContentText(applicationContext.getString(R.string.notify_content))
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
+
+
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     val notificationChannel = NotificationChannel(
